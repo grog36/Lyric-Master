@@ -8,7 +8,9 @@
 
 #### How to install and use:
   * Make sure to install nodejs from https://nodejs.org/en/download
-  * Clone repository and create a 'links.txt' file
+  * Clone the repository (click <> Code, and you can download as zip)
+  * Extract the zip file and navigate into the extracted folder
+  * Create a 'links.txt' file in the extracted folder
   * In 'links.txt', copy and paste a link to the musixmatch.com lyrics for each song
     * example:
       ```txt
@@ -16,7 +18,9 @@
       https://www.musixmatch.com/lyrics/LINKIN-PARK/Numb
       https://www.musixmatch.com/lyrics/Ana-Mena/Un-Millón-de-Lunas
       ```
-  * Navigate to the repository directory and run the 'get-lyrics.js' file using your terminal
+    * *Make sure that each line is a single link and there are no weird white spaces*
+  * open the terminal and navigate to your extracted folder (using the cd command)
+  * run the 'get-lyrics.js' file using your terminal
     ```bash
     node get-lyrics.js
     ```
