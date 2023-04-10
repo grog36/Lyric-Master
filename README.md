@@ -20,6 +20,10 @@
       ```
     * *Make sure that each line is a single link and there are no weird white spaces*
   * open the terminal and navigate to your extracted folder (using the cd command)
+  * run the command 'npm install' to install the necessary packages
+    ```bash
+    npm install
+    ```
   * run the 'get-lyrics.js' file using your terminal
     ```bash
     node get-lyrics.js
