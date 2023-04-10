@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import fs, { symlinkSync } from "fs";
+import { ALL } from "dns";
 
 const LINKS = getLinks(); //Gets the links from links.txt
 const ALL_LYRICS = {"TOTAL": {}}; //Initializes an empty array for lyrics
@@ -106,6 +107,39 @@ function writeToFile() {
     });
 }
 
+/**
+ * Displays the most used lyrics in all songs to the console
+ */
+function displayMostUsed() {
+    let lyricList = [];
+    for (let lyric in ALL_LYRICS["TOTAL"]) {
+        lyricList.push([lyric, ALL_LYRICS["TOTAL"][lyric]]);
+    }
+    let sortedList = sortLyrics(lyricList);
+    console.log(sortedList);
+}
+
+/**
+ * Sorts the lyrics based off of how many times each are used
+ * @param {2D Array} listOfLyrics A 2D list wherein each element contains a word and a count
+ * @returns A 2D Array in order of most used words to least used words
+ */
+function sortLyrics(listOfLyrics) {
+    let sortedList = [];
+    for (let i = 0; i < listOfLyrics.length - 1; i++) {
+        let currentMax = listOfLyrics[0][1];
+        let currentMaxIndex = 0;
+        for (let j = 0; j < listOfLyrics.length - 1; j++) {
+            if (listOfLyrics[j][1] > currentMax) {
+                currentMaxIndex = j;
+                currentMax = listOfLyrics[j][1];
+            }
+        }
+        sortedList.push(listOfLyrics[currentMaxIndex]);
+        listOfLyrics.splice(currentMaxIndex, 1);
+    }
+    return sortedList;
+}
 
 /**
  * Main Code
@@ -128,6 +162,7 @@ async function main() {
         }
     }
     writeToFile();
+    displayMostUsed();
 }
 
 //Global Code
