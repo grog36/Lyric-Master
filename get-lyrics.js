@@ -1,10 +1,9 @@
 import fetch from "node-fetch";
-import fs, { symlinkSync } from "fs";
-import { ALL } from "dns";
+import fs from "fs";
 
 const LINKS = getLinks(); //Gets the links from links.txt
-const ALL_LYRICS = {"TOTAL": {}}; //Initializes an empty array for lyrics
-
+const ALL_LYRICS = {"TOTAL": {}}; //Initializes an empty object for lyrics
+const SORTED_LYRICS = {}; //Initializes an empty object for the sorted lyrics
 
 /**
  * Returns the HTML code from a musixmatch.com/lyrics website for a requested song
@@ -71,6 +70,32 @@ function getLinks() {
 function countLyrics(lyrics, song) {
     //Removes random characters in words
     let words = lyrics.replaceAll("\n", " ");
+    let charactersToReplace = [
+        ',',
+        '.',
+        '_',
+        '\,',
+        '"',
+        '?',
+        '¿',
+        '!',
+        '¡',
+        '(',
+        ')',
+        '[',
+        ']',
+        '{',
+        '}',
+        '+',
+        '/',
+        '<',
+        '>',
+        '\\',
+        '|'
+    ]
+    for (let char of charactersToReplace) {
+        words = words.replaceAll(char, "");
+    }
     let wordArray = words.split(" ");
 
     //Actually starts the counting process
@@ -99,7 +124,7 @@ function countLyrics(lyrics, song) {
  * Writes the "ALL_LYRICS" JSON Object to a file called "lyric-count.json"
  */
 function writeToFile() {
-    let jsonData = JSON.stringify(ALL_LYRICS, null, 1);
+    let jsonData = JSON.stringify(SORTED_LYRICS, null, 1);
     fs.writeFile("lyric-count.json", jsonData, "utf-8", (err) => {
         if (err) {
             console.log(err);
@@ -108,15 +133,40 @@ function writeToFile() {
 }
 
 /**
- * Displays the most used lyrics in all songs to the console
+ * Displays the most used words in each song
+ * @param {Number} numOfTop The number of top words for each song to display
  */
-function displayMostUsed() {
-    let lyricList = [];
-    for (let lyric in ALL_LYRICS["TOTAL"]) {
-        lyricList.push([lyric, ALL_LYRICS["TOTAL"][lyric]]);
+function displayMostUsed(numOfTop) {
+    for (let key in SORTED_LYRICS) {
+        let numToGo = numOfTop;
+        console.log(`Top ${numOfTop} lyrics in song: ${key}`);
+        for (let word in SORTED_LYRICS[key]) {
+            if (numToGo > 0) {
+                console.log(`\t"${word}" is used ${SORTED_LYRICS[key][word]} times.`);
+                numToGo--;
+            }
+            else {
+                break;
+            }
+        }
     }
-    let sortedList = sortLyrics(lyricList);
-    console.log(sortedList);
+}
+
+/**
+ * Sorts the "ALL_LYRICS" object and stores it in "SORTED_LYRICS"
+ */
+function sortObject() {
+    for (let key in ALL_LYRICS) {
+        SORTED_LYRICS[key] = {};
+        let lyricList = [];
+        for (let lyric in ALL_LYRICS[key]) {
+            lyricList.push([lyric, ALL_LYRICS[key][lyric]]);
+        }
+        let sortedList = sortLyrics(lyricList);
+        for (let keyValuePair of sortedList) {
+            SORTED_LYRICS[key][keyValuePair[0]] = keyValuePair[1];
+        }
+    }
 }
 
 /**
@@ -161,8 +211,9 @@ async function main() {
             console.log(`${link} ::: IS NOT A VALID LINK.`);
         }
     }
+    sortObject();
+    displayMostUsed(10);
     writeToFile();
-    displayMostUsed();
 }
 
 //Global Code
