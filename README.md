@@ -13,7 +13,7 @@
   * Create a 'links.txt' file in the extracted folder
   * In 'links.txt', copy and paste a link to the musixmatch.com lyrics for each song
     * example:
-      ```txt
+      ```
       https://www.musixmatch.com/lyrics/George-Michael-feat-Wham/Last-Christmas
       https://www.musixmatch.com/lyrics/LINKIN-PARK/Numb
       https://www.musixmatch.com/lyrics/Ana-Mena/Un-Millón-de-Lunas
@@ -21,21 +21,15 @@
     * *Make sure that each line is a single link and there are no weird white spaces*
   * open the terminal and navigate to your extracted folder (using the cd command)
   * run the command 'npm install' to install the necessary packages
-    ```bash
-    npm install
-    ```
+    ```npm install```
   * run the 'get-lyrics.js' file using your terminal
-    ```bash
-    node get-lyrics.js
-    ```
+    ```node get-lyrics.js```
     or sometimes
-    ```bash
-    nodejs get-lyrics.js
-    ```
+    ```nodejs get-lyrics.js```
   * The output should display a list of the 10 most common words in all songs combined "TOTAL" and each individual song
   * Each artist will have it's own subdirectory created with .txt files corresponding to each of the artist's song's lyrics
     * For example, if I ran the above 'links.txt' file I would see this as the output:
-      ```bash
+      ```
       Top 10 lyrics in song: TOTAL
         "you" is used 38 times.
         "i" is used 30 times.
@@ -86,14 +80,10 @@
 -------------
 
 #### Problems that can occur:
-  - ```bash
-    FETCH ERROR
-    ```
+  - ```FETCH ERROR```
     occurs when there was a problem connecting to the website (status != 200)
 
-  - ```bash
-    {link} ::: IS NOT A VALID LINK.
-    ```
+  - ```{link} ::: IS NOT A VALID LINK.```
     occurs when a link in 'links.txt' is not a valid https://musixmatch.com/lyrics link
   
   - Some lyrics might contain strange characters (¿, ¡, etc.). This is caused due to dozens of languages and the inability to strip every single weird characters for all of the words. If you find a character that you wish to be removed, please let me know.  
