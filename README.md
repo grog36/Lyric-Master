@@ -4,6 +4,8 @@
 
 ### Version : April 2023
 
+### NO LONGER WORKS. MUSIXMATCH HAS BOT DETECTION.
+
 -------------
 
 #### How to install and use:
